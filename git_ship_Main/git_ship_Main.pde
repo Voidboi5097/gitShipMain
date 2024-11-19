@@ -41,7 +41,7 @@ boolean atWarp;
 boolean showDialogue;
 
 Star[] stars = new Star[400];
-Planet[] planets;
+Planet earth;
 Person person;
 Checksum healthbar;
 Junk junk;
@@ -70,10 +70,8 @@ void draw(){
      stars[i].display();
     }
     //location
-    for(Planet planet : planets){
-      planet.update();
-      planet.display();
-    }
+     earth.update();
+     earth.display();
   
     //viewscreen
     if(showDialogue){
@@ -104,6 +102,9 @@ void init(){
   for(int i = 0; i < stars. length; i++){
     stars[i] = new Star();
   }
+  char[] c = binary(healthbar.checksum).toCharArray();
+  c[c.length - 3] = '1';
+  healthbar.checksum = unbinary(new String(c));
   //cargo
   loadCargo();
   println("Cargo manifest:");
@@ -111,16 +112,9 @@ void init(){
     println(item);
   }
   //location
-  //150 to 450, 100 to 200, 50 to 375, 0 to 50
-  planets = new Planet[3];
-  planets[2] = new Planet(0.15*width, 0.3*height, 25, 30, 5, 48);
-  planets[1] = new Planet(0.25*width, 0.2 * height, 20, 23, 4, 1);
-  planets[0] = new Planet(0.9*width, 0.7*height, 180, 50, 50, 5);
+  earth = new Planet(2*width/3, height/4, 50);
   //dialogue
   person = new Person();
-  char[] q = binary(healthbar.checksum).toCharArray();
-  q[q.length - 7] = '1';
-  healthbar.checksum = unbinary(new String(q));
   //junk
   junk = new Junk();
   
@@ -129,12 +123,19 @@ void init(){
 
 void dropOutOfWarp(){
   speed = 0.00;
-  float rndX = 322; // 150 to 450
-  float rndY = 120; // 100, 200
+  float rndX = 150; // 150 to 450
+  float rndY = 140; // 100, 200
+  float rndX = 393; // 150 to 450
+  float rndY = 124; // 100, 200
+  float rndX = 183; // 150 to 450
+  float rndY = 197; // 100, 200
   x = map(rndX, 0.25*width, 0.75*width, 0, 10);
   y = map(rndY, 0.25*height, 0.5*height, 0, 10);
-  planets[0].sliders();
-  location = "Many Moons";
+  earth = new Planet(rndX, rndY, random(50, 375));
+  earth.sliders();
+  location = "Planet Name";
+  location = "New Toronto VI";
+  location = "Nerd Prime";
 }
 
 void noSignal(){
